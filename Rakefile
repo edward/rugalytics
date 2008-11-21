@@ -1,4 +1,5 @@
-require 'rubygems'; require 'spec'; require 'lib/rugalytics'
+require 'rubygems'; require 'spec'; require 'spec/rake/spectask'
+require 'lib/rugalytics'
 
 begin
   require 'echoe'
@@ -26,4 +27,9 @@ end
 desc "Run all examples with RCov"
 task :rcov do
   sh '/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -Ilib -S rcov --text-report  -o "coverage" -x "Library" spec/lib/**/*'
+end
+
+Spec::Rake::SpecTask.new do |t|
+  t.warning = false
+  t.rcov = false
 end
