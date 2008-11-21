@@ -11,7 +11,7 @@ require 'yaml'
 
 # See README for usage documentation.
 module Rugalytics
-  VERSION = "0.1.1"
+  VERSION = "0.1.2"
 
   FORMAT_PDF = '0' unless defined? FORMAT_PDF
   FORMAT_XML = '1' unless defined? FORMAT_XML
@@ -41,6 +41,13 @@ module Rugalytics
       rescue NameError => e
         raise 'No connection - call Rugalytics.login(<username>,<password>)'
       end
+    end
+
+    def reports
+      profile = Rugalytics.default_profile
+      names = profile.report_names
+      puts names
+      names.collect {|n| puts ''; puts n; profile.send(n.to_sym)}
     end
 
     def default_profile
@@ -93,5 +100,6 @@ require File.dirname(__FILE__) + '/rugalytics/profile'
 require File.dirname(__FILE__) + '/rugalytics/report'
 require File.dirname(__FILE__) + '/rugalytics/item'
 require File.dirname(__FILE__) + '/rugalytics/graph'
+require File.dirname(__FILE__) + '/rugalytics/server'
 
 # Rugalytics.config_setup(RAILS_ROOT) if defined?(RAILS_ROOT) && RAILS_ROOT
