@@ -74,7 +74,10 @@ module Rugalytics
           #   "November 1, 2008",0
           #
           line = lines[index]
-          point = line[/^\".+?\",(.+)$/, 1]
+          point = case line
+                  when /^.+?,\"(.+?)\"$/: $1
+                  when /^.+?,(\d+)/: $1
+                  end
           
           # Turn something like '"2,766"' into '2766' by removing all non-digit characters
           point.gsub!(/\D/, '')

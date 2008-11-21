@@ -181,10 +181,12 @@ describe Report do
                 @column_names,
                 '"November 1, 2008","5,360"',
                 '"November 2, 2008",575',
+                '"20 October 2008,9"',
+                '15 November 2008,"2,766"',
                 '# ----------------------------------------']
         graph = mock('graph')
 
-        Graph.should_receive(:new).with(@name, [5360, 575], expected_start, expected_end).and_return graph
+        Graph.should_receive(:new).with(@name, [5360, 575, 9, 2766], expected_start, expected_end).and_return graph
 
         report = Report.new(@csv.join("\n"))
         report.pageviews_graph.should == graph
