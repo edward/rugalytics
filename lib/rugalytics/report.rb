@@ -49,21 +49,36 @@ module Rugalytics
     end
 
     def handle_graphs lines
+      # Skip the first 5 lines (the attributes header)
       index = 5
+      
       while index < lines.size
+        
+        # Skip the "Graph" header
         while (lines[index][/^# Graph/].nil? || lines[index].strip.size == 0)
           index = index.next
           return if index == lines.size
         end
         index = index + 2
+        
+        # Read the graph's dependent variable (the non-time axis)
         column_names = lines[index]
         name = column_names.split(',').last
         index = index.next
-
+        
+        # Consume date and value points
         points = []
-        while (date_point = lines[index]) && (date = date_point[/^\".+?\",/])
-          point = date_point.sub(date,'')
-          points << point.tr('",','').to_i
+        until lines[index] =~ /^# ---/ do
+          # A line looks like this as of November 20, 2008:
+          #
+          #   "November 1, 2008",0
+          #
+          line = lines[index]
+          point = line[/^\".+?\",(.+)$/, 1]
+          
+          # Turn something like '"2,766"' into '2766' by removing all non-digit characters
+          point.gsub!(/\D/, '')
+          points << Integer(point)
           index = index.next
         end
 
