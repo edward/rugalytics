@@ -61,7 +61,7 @@ module Rugalytics
         index = index.next
 
         points = []
-        while (date_point = lines[index]) && (date = date_point[/^\d\d\d\d\d\d\d\d,/])
+        while (date_point = lines[index]) && (date = date_point[/^\".+?\",/])
           point = date_point.sub(date,'')
           points << point.tr('",','').to_i
           index = index.next
